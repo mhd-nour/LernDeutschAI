@@ -6,7 +6,7 @@ import React, { useState, useRef } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Camera, CameraType } from "expo-camera";
+import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { ScreenContainer, Button } from "../../components";
@@ -20,10 +20,10 @@ type CameraNavigationProp = NativeStackNavigationProp<
 
 const CameraScreen: React.FC = () => {
   const navigation = useNavigation<CameraNavigationProp>();
-  const cameraRef = useRef<Camera>(null);
+  const cameraRef = useRef<CameraView>(null);
 
-  const [permission, requestPermission] = Camera.useCameraPermissions();
-  const [facing, setFacing] = useState<CameraType>(CameraType.back);
+  const [permission, requestPermission] = useCameraPermissions();
+  const [facing, setFacing] = useState<CameraType>("back");
   const [isCapturing, setIsCapturing] = useState(false);
 
   if (!permission) {
@@ -91,13 +91,13 @@ const CameraScreen: React.FC = () => {
 
   const toggleCameraFacing = () => {
     setFacing((current) =>
-      current === CameraType.back ? CameraType.front : CameraType.back,
+      current === "back" ? "front" : "back",
     );
   };
 
   return (
     <View style={styles.container}>
-      <Camera ref={cameraRef} style={styles.camera} type={facing}>
+      <CameraView ref={cameraRef} style={styles.camera} facing={facing}>
         {/* Top Controls */}
         <View style={styles.topControls}>
           <TouchableOpacity
@@ -154,7 +154,7 @@ const CameraScreen: React.FC = () => {
 
           <View style={styles.controlsSpacer} />
         </View>
-      </Camera>
+      </CameraView>
     </View>
   );
 };

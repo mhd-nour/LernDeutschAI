@@ -13,7 +13,7 @@
 
 import React, { useEffect } from "react";
 import { StatusBar, LogBox } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { DarkTheme, NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
@@ -33,8 +33,9 @@ LogBox.ignoreLogs([
 
 // Navigation theme (dark mode)
 const navigationTheme = {
-  dark: true,
+  ...DarkTheme,
   colors: {
+    ...DarkTheme.colors,
     primary: COLORS.primary.default,
     background: COLORS.background.primary,
     card: COLORS.surface.primary,

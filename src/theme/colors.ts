@@ -8,7 +8,7 @@ export const COLORS = {
   background: {
     primary: "#0F172A",
     secondary: "#1E293B",
-    gradient: ["#0F172A", "#1E293B"] as string[],
+    gradient: ["#0F172A", "#1E293B"] as const,
   },
 
   // Surface Colors
@@ -24,7 +24,7 @@ export const COLORS = {
     default: "#F59E0B",
     light: "#FBBF24",
     dark: "#D97706",
-    gradient: ["#F59E0B", "#D97706"] as string[],
+    gradient: ["#F59E0B", "#D97706"] as const,
   },
 
   // Secondary Accent (Teal - for success/mastered)
@@ -32,7 +32,7 @@ export const COLORS = {
     default: "#14B8A6",
     light: "#2DD4BF",
     dark: "#0D9488",
-    gradient: ["#14B8A6", "#0D9488"] as string[],
+    gradient: ["#14B8A6", "#0D9488"] as const,
   },
 
   // Status Colors

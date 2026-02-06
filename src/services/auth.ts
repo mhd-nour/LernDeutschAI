@@ -110,10 +110,30 @@ export const signOut = async (): Promise<{
 export const getCurrentSession = async () => {
   try {
     const { data, error } = await supabase.auth.getSession();
-    if (error) throw error;
+
+    if (error) {
+      // Filter out "Auth session missing!" error
+      // The error object might be a structured Supabase error or a simple object
+      const isSessionMissing =
+        error.message?.includes("Auth session missing") ||
+        (error as any).name === "AuthSessionMissingError" ||
+        JSON.stringify(error).includes("Auth session missing");
+
+      if (!isSessionMissing) {
+        throw error;
+      }
+      return null;
+    }
     return data.session;
-  } catch (error) {
-    console.error("Get session error:", error);
+  } catch (error: any) {
+    const isSessionMissing =
+      error?.message?.includes("Auth session missing") ||
+      error?.name === "AuthSessionMissingError" ||
+      JSON.stringify(error).includes("Auth session missing");
+
+    if (!isSessionMissing) {
+      console.error("Get session error:", error);
+    }
     return null;
   }
 };
@@ -127,7 +147,18 @@ export const getCurrentUser = async (): Promise<User | null> => {
       data: { user },
       error,
     } = await supabase.auth.getUser();
-    if (error) throw error;
+
+    if (error) {
+      const isSessionMissing =
+        error.message?.includes("Auth session missing") ||
+        (error as any).name === "AuthSessionMissingError" ||
+        JSON.stringify(error).includes("Auth session missing");
+
+      if (!isSessionMissing) {
+        throw error;
+      }
+      return null;
+    }
 
     if (user) {
       // Fetch profile
@@ -144,8 +175,15 @@ export const getCurrentUser = async (): Promise<User | null> => {
       };
     }
     return null;
-  } catch (error) {
-    console.error("Get user error:", error);
+  } catch (error: any) {
+    const isSessionMissing =
+      error?.message?.includes("Auth session missing") ||
+      error?.name === "AuthSessionMissingError" ||
+      JSON.stringify(error).includes("Auth session missing");
+
+    if (!isSessionMissing) {
+      console.error("Get user error:", error);
+    }
     return null;
   }
 };
